@@ -61,3 +61,9 @@ export async function convertQuote(id){
  if(!navigator.onLine)throw Error('Liga-te à internet para converter o orçamento.');
  const idCreated=await request('/rest/v1/rpc/rg3d_convert_quote',{method:'POST',body:{quote_id:id},token:await token()});await load();return idCreated;
 }
+
+export async function ensureKobra(){
+ if(role!=='admin'||list('printers').some(p=>/kobra\s*x/i.test(p.name||'')))return;
+ try{await save('printers',{id:'3d000000-0000-4000-8000-000000000001',name:'Anycubic Kobra X',watts:150,price:0,lifeHours:5000,maintenanceHour:0.05,notes:'Perfil RG3D: consumo médio de 150 W estimado (não é potência nominal). Vida útil de 5000 h e manutenção de 0,05 €/h são hipóteses de orçamento. Preencher preço de compra e ajustar ao consumo medido.'});}
+ catch(e){await load();if(!list('printers').some(p=>/kobra\s*x/i.test(p.name||'')))throw e;}
+}
