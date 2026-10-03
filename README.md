@@ -116,3 +116,4 @@ python3 -m http.server 8080
 Abre `http://localhost:8080` e toca em Explorar demonstração. Os testes cobrem fórmulas financeiras, desconto, quantidades inválidas, saldo parcial e segurança da exportação CSV. O modo sincronizado precisa de um projeto Supabase configurado para validar a integração real.
 
 Fontes técnicas: https://supabase.com/docs/guides/auth · https://supabase.com/docs/guides/database/postgres/row-level-security · https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site
+Sistema de gestão RG3D
