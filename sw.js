@@ -1,4 +1,4 @@
-const CACHE='rg3d-shell-v2';
+const CACHE='rg3d-shell-v3';
 const FILES=['./','./index.html','./style.css','./app.js','./core.js','./store.js','./config.js','./manifest.webmanifest','./assets/logo.jpg','./assets/icon-192.png','./assets/icon-512.png'];
 self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(FILES))));
 self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('rg3d-shell-')&&k!==CACHE).map(k=>caches.delete(k))))));
