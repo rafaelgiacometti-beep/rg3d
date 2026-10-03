@@ -1,0 +1,36 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {calculate,paidFor,balanceFor} from '../core.js';
+const storage=new Map();
+globalThis.localStorage={getItem:k=>storage.get(k)??null,setItem:(k,v)=>storage.set(k,String(v)),removeItem:k=>storage.delete(k)};
+Object.defineProperty(globalThis,'navigator',{value:{onLine:true},configurable:true});
+const db=await import('../store.js');
+test('Cliente → orçamento → venda → pagamentos parciais e estado de entrega',async()=>{
+ db.startDemo();
+ const clientId=await db.save('clients',{name:'Cliente RG3D',email:'cliente@example.com'});
+ const x={quantity:3,grams:16,kgPrice:16,hours:0.5,watts:150,kwhPrice:.23,machineHour:.25,laborMinutes:5,laborHour:10,extras:.3,packaging:.2,waste:5,margin:35,discount:0,vat:23};
+ const result=calculate(x);
+ const quoteId=await db.save('quotes',{...x,number:'TESTE',date:'2026-10-03',product:'Chaveiro NFC',clientId,clientName:db.get('clients',clientId).name,status:'Pendente',result});
+ const orderId=await db.convertQuote(quoteId);
+ assert.equal(db.get('quotes',quoteId).status,'Convertido');
+ assert.equal(db.get('orders',orderId).clientName,'Cliente RG3D');
+ assert.deepEqual(db.get('orders',orderId).result,result);
+ assert.equal(await db.convertQuote(quoteId),orderId);
+ assert.equal(db.list('orders').length,1,'duplo clique não duplica venda');
+ const paymentId=await db.save('payments',{orderId,amount:2,date:'2026-10-03',method:'MB WAY'});
+ assert.equal(paidFor(db.get('orders',orderId),db.list('payments')),2);
+ const remaining=balanceFor(db.get('orders',orderId),db.list('payments'));
+ await db.save('payments',{orderId,amount:remaining,date:'2026-10-03',method:'Transferência'});
+ assert.equal(balanceFor(db.get('orders',orderId),db.list('payments')),0);
+ await db.save('orders',{...db.get('orders',orderId),status:'Entregue'});
+ assert.equal(db.get('orders',orderId).status,'Entregue');
+ await db.remove('payments',paymentId);
+ assert.equal(balanceFor(db.get('orders',orderId),db.list('payments')),2);
+ db.logout();db.startDemo();assert.equal(db.list('orders').length,1,'demonstração persiste no dispositivo');
+});
+test('Ligação recusa chaves secretas e URLs inseguros',()=>{
+ assert.throws(()=>db.configure('http://example.supabase.co','public-key'));
+ assert.throws(()=>db.configure('https://example.supabase.co','sb_secret_test'));
+ const jwt='a.'+Buffer.from(JSON.stringify({role:'service_role'})).toString('base64url')+'.c';
+ assert.throws(()=>db.configure('https://example.supabase.co',jwt));
+});
