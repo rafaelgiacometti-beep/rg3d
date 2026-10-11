@@ -116,4 +116,7 @@ python3 -m http.server 8080
 Abre `http://localhost:8080` e toca em Explorar demonstração. Os testes cobrem fórmulas financeiras, desconto, quantidades inválidas, saldo parcial e segurança da exportação CSV. O modo sincronizado precisa de um projeto Supabase configurado para validar a integração real.
 
 Fontes técnicas: https://supabase.com/docs/guides/auth · https://supabase.com/docs/guides/database/postgres/row-level-security · https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site
-Sistema de gestão RG3D
+
+### Fotos dos produtos
+Em **Produtos → Adicionar / Editar → Foto do produto**, seleciona uma imagem e clica em **Guardar**. É possível substituir ou remover a foto. As fotos são reduzidas a JPEG com lado máximo de 640 px e guardadas no registo protegido do produto, partilhado pela equipa. Não é necessário SQL adicional nem configurar um bucket.
+A foto aparece na lista de produtos, ao selecionar um produto no orçamento e nas listas e detalhes de orçamentos e vendas. Estes ecrãs usam a foto atual do cadastro; o PDF mantém o formato anterior. Usa JPG, PNG ou WebP se o navegador não conseguir abrir HEIC.
