@@ -120,3 +120,6 @@ Fontes técnicas: https://supabase.com/docs/guides/auth · https://supabase.com/
 ### Fotos dos produtos
 Em **Produtos → Adicionar / Editar → Foto do produto**, seleciona uma imagem e clica em **Guardar**. É possível substituir ou remover a foto. As fotos são reduzidas a JPEG com lado máximo de 640 px e guardadas no registo protegido do produto, partilhado pela equipa. Não é necessário SQL adicional nem configurar um bucket.
 A foto aparece na lista de produtos, ao selecionar um produto no orçamento e nas listas e detalhes de orçamentos e vendas. Estes ecrãs usam a foto atual do cadastro; o PDF mantém o formato anterior. Usa JPG, PNG ou WebP se o navegador não conseguir abrir HEIC.
+
+### Biblioteca no Google Drive
+A aba **Biblioteca 3D** organiza os STL e 3MF de uma pasta privada e subpastas, com pesquisa, imagens e ligação a orçamentos. A configuração requer um Client ID Google e o link da pasta. Ver [GOOGLE-DRIVE.md](./GOOGLE-DRIVE.md). O visualizador STL simplifica a malha para rotação e zoom; 3MF utiliza a miniatura interna quando disponível. A integração real com Google depende da configuração OAuth de cada conta.

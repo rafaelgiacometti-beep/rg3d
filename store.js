@@ -32,7 +32,7 @@ export async function load(){
  while(true){const page=await request('/rest/v1/rg3d_records?select=*&order=created_at.asc,id.asc&limit=500&offset='+offset,{token:t});all.push(...page);if(page.length<500)break;offset+=500;}
  records=all;cache();
 }
-function cache(){localStorage.setItem(demo?'rg3d.demo':'rg3d.cache.'+session.user.id,JSON.stringify(demo?records:{records,role}));}
+function cache(){const key=demo?'rg3d.demo':'rg3d.cache.'+session.user.id;try{localStorage.setItem(key,JSON.stringify(demo?records:{records,role}));}catch(e){if(demo)throw e;try{localStorage.removeItem(key);}catch{}}}
 export const list=kind=>records.filter(r=>r.kind===kind).map(r=>({...r.payload,id:r.id,_version:r.version}));
 export const get=(kind,id)=>list(kind).find(r=>r.id===id);
 export async function save(kind,data){
