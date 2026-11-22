@@ -1,5 +1,5 @@
-const CACHE_NAME = "lagoinha-contagem-v3";
-const APP_SHELL = ["./","./manifest.webmanifest","./icons/logo-horizontal.webp","./icons/icon-192.webp","./icons/icon-512.webp","./icons/apple-touch-icon.png"];
+const CACHE_NAME = "lagoinha-contagem-v4";
+const APP_SHELL = ["./","./manifest.webmanifest","./icons/logo-horizontal-original.webp","./icons/icon-192.webp","./icons/icon-512.webp","./icons/apple-touch-icon.png"];
 self.addEventListener("install", event => {
   event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(APP_SHELL)).catch(() => {}));
   self.skipWaiting();
